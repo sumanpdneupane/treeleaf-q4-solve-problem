@@ -79,8 +79,8 @@ The task is to convert an existing customer ID system (4-byte integer IDs) to a 
 ```
 
 ### Designing the Solution
+#### Data Structure
 ```
-Data Structure
 We will use a map to represent the customer profile collection
     * Key: For old customer use Customer ID (int), or an auto-generated key for new customers.
     * Value: A CustomerProfile structure containing all the required fields.
@@ -90,4 +90,17 @@ Using a map allows:
     * Easy updates to add or remove entries.
     * Compatibility with immutable profiles, as we can create new entries without modifying 
       existing ones.
+```
+
+#### CustomerProfile Structure
+The CustomerProfile structure inside model folder represents each customer's data:
+```go
+type CustomerProfile struct {
+	OldCustomerID int    // Old 4-byte integer customer ID (can be 0 for new customers)
+	NewCustomerID string // New 128-bit UUID customer ID
+	Name          string // Customer name
+	Address       string // Customer address
+	RFIDNumber    int64  // RFID number (8-byte integer)
+	JoinedDate    string // Customer joined date
+}
 ```
