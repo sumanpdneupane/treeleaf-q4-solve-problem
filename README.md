@@ -1,3 +1,4 @@
+## Question:
 ```
 Q4. This test is to know your problem solving ability and how well you have understood
 data structure and algorithms. So we recommend you to understand case study very well
@@ -20,6 +21,7 @@ from 4 byte to 8 byte like with rfid number which is 8 byte integer. But CTO dec
 integer any more for new customer id because there won’t be any arithmetic operations on
 customer ids and if any case sort is necessary than rfid number or joined date can be used as those
 are sequential. So for new customer id, 128 bit UUID is used.
+
 Question 1:
 As you are software engineer of Jasmine now you have to write function to convert existing
 structure of 4 byte integer customer id to new 128 bit UUID customer id. But you need to consider
@@ -45,4 +47,47 @@ Notes:
 1. For customer profile collections you can use any Abstract Data Types like List, Set or Map 2.
 For random UUID you don’t have to show how it’s generated. You can use “ set uuid =
 randomUUID()”
+```
+
+
+## Answers
+### Problem Breakdown
+```
+The task is to convert an existing customer ID system (4-byte integer IDs) to a new UUID-based system 
+(128-bit) while considering the following constraints:
+
+1. No Downtime:
+    * Jasmine operates 24/7/365, so the system must handle updates live without pausing operations.
+
+2. Immutable Customer Profile:
+    * Once created, a customer profile cannot be updated. If changes are required, the old profile must
+      be remain untouched, and a new profile with updated data must be created.
+
+3. New Profile Structure:
+    * The new profile format must include:
+        * customer id (old 4-byte integer, if applicable)
+        * new customer id (128-bit UUID)
+        * Customer name
+        * Address
+        * RFID number
+        * Joined date.
+
+4. Handling Existing and New Customers:
+    * For existing customers, the new UUID should be added alongside the old customer ID.
+    * For new customers, the old customer ID is not required and should be null.
+
+```
+
+### Designing the Solution
+```
+Data Structure
+We will use a map to represent the customer profile collection
+    * Key: For old customer use Customer ID (int), or an auto-generated key for new customers.
+    * Value: A CustomerProfile structure containing all the required fields.
+
+Using a map allows:
+    * Fast lookups (O(1) complexity)
+    * Easy updates to add or remove entries.
+    * Compatibility with immutable profiles, as we can create new entries without modifying 
+      existing ones.
 ```
