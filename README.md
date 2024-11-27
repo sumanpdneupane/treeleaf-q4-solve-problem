@@ -104,3 +104,46 @@ type CustomerProfile struct {
 	JoinedDate    string // Customer joined date
 }
 ```
+
+#### Function Logic
+```
+The ConvertCustomerProfiles function updates the profile collection:
+    * Inputs:
+        * profiles: A map[int]CustomerProfile representing all customer profiles.
+        * oldCustomerID: A pointer to an integer, representing the old customer ID.
+            * If it is provided (not nil), the function processes an existing customer.
+            * If it is nil, the function adds a new customer profile.
+        * newProfile: A CustomerProfile containing details of the new customer to add.
+    * Outputs: 
+        * An updated map[int]CustomerProfile containing both old and new profiles.
+
+Function Logic: 
+1. Existing Customer:
+    * If oldCustomerID is provided:
+        * Lookup the customer in the profiles map.
+        * Create a new CustomerProfile with:
+            * The same data as the existing profile.
+            * A newly generated UUID using uuid.New()
+        * Add this updated profile to the collection. (The old profile remains untouched.)    
+2. New Customer:
+    * If oldCustomerID is nil:
+        * Generate a new UUID for the customer.
+        * Populate the CustomerProfile with the provided data.
+        * Add the new profile to the collection with a new key (auto-incremented).
+3. Immutable Profiles:
+    * The old profile for existing customers is left unchanged, ensuring immutability.
+```
+
+### Output
+```
+After running the main function, the profiles collection will be updated as follows:
+1. Alice (existing customer):
+    * Old ID: 1001
+    * New UUID: (Eg) 3b241101-e2bb-4255-8caf-4136c566a962
+2. Bob (existing customer):
+    * Old ID: 1002
+    * No UUID yet (can be converted in future calls).
+3. Charlie (new customer):
+    * Old ID: 0 (none)
+    * New UUID: (Eg) 9b74c989-7b1b-4d5c-ae89-d9a02baba625
+```
