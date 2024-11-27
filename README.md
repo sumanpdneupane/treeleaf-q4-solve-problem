@@ -105,7 +105,7 @@ type CustomerProfile struct {
 }
 ```
 
-#### Function Logic
+### Function Logic
 ```
 The ConvertCustomerProfiles function updates the profile collection:
     * Inputs:
@@ -133,6 +133,67 @@ Function Logic:
 3. Immutable Profiles:
     * The old profile for existing customers is left unchanged, ensuring immutability.
 ```
+
+### Code Walkthrough
+Here’s how the code works step by step:
+
+#### Initialization
+We create a sample collection of customer profiles using a map[int]CustomerProfile.
+``` go
+customerProfiles := map[int]CustomerProfile{
+	1001: {OldCustomerID: 1001, NewCustomerID: "", Name: "Alice", Address: "123 Main St", RFIDNumber: 2001, JoinedDate: "2024-01-01"},
+	1002: {OldCustomerID: 1002, NewCustomerID: "", Name: "Bob", Address: "456 Elm St", RFIDNumber: 2002, JoinedDate: "2024-01-02"},
+}
+```
+
+#### Existing Customer Conversion
+For an existing customer (oldCustomerID = 1001), we:
+1. Lookup the profile in the profiles map:
+``` go
+profile := profiles[1001]
+```
+2. Generate a new UUID:
+``` go
+newUUID := uuid.New().String()
+```
+3. Create a new CustomerProfile with the new UUID:
+``` go
+updatedProfile := CustomerProfile{
+    OldCustomerID: profile.OldCustomerID,
+    NewCustomerID: newUUID,
+    Name:          profile.Name,
+    Address:       profile.Address,
+    RFIDNumber:    profile.RFIDNumber,
+    JoinedDate:    profile.JoinedDate,
+}
+```
+4. Add the updated profile to the profiles map:
+``` go
+profiles[profile.OldCustomerID] = updatedProfile
+```
+
+#### New Customer Addition
+For a new customer (oldCustomerID = nil), we:
+1. Generate a new UUID:
+``` go
+newUUID := uuid.New().String()
+```
+2. Create a new profile with the provided data:
+``` go 
+newProfile := CustomerProfile{
+    OldCustomerID: 0,
+    NewCustomerID: newUUID,
+    Name:          "Charlie",
+    Address:       "789 Oak St",
+    RFIDNumber:    2003,
+    JoinedDate:    "2024-11-27",
+}
+```
+3. Add the new profile to the collection with an auto-incremented key:
+``` go
+profiles[len(profiles)+1] = newProfile
+```
+
 
 ### Output
 ```
